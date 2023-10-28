@@ -1,0 +1,55 @@
+#include <targets/AT91SAM7.h>
+#include "lcd.h"
+ 
+#define LCD_BACKLIGHT PIOB_SODR_P20 
+#define AUDIO_OUT PIOB_SODR_P19
+#define SW_1 PIOB_SODR_P24
+#define SW_2 PIOB_SODR_P25
+ 
+__attribute__ ((section(".fast")))
+void delay(int n) //procedura opoznienia 
+{
+  volatile int i;
+ 
+for(i=3000*n;i>0;i--)
+  {
+  __asm__("nop");
+  }
+}
+ 
+int main()
+{
+  PMC_PCER=PMC_PCER_PIOB; //wlaczenie urzadzenia we/wy PIOB
+  PIOB_OER=LCD_BACKLIGHT | AUDIO_OUT; //OUTPUT ENABLE
+  PIOB_PER=LCD_BACKLIGHT | AUDIO_OUT; //PIO ENABLE 
+   
+  InitLCD(); 
+  LCDSettings();
+  LCDClearScreen(); "Go to Definition"
+  LCDPutStr("Andrzej Tracz", 0, 0, LARGE, BLACK, WHITE); 
+  LCDPutStr("GL04", 20, 0, LARGE, BLACK, WHITE);  
+  LCDClearScreenV2(40,40,70,70);
+   
+  return 0;
+}
+ 
+  //Definicja "LCDClearScreenV2" w lcd.c
+ 
+  void LCDClearScreenV2(int x0, int y0, int x1, int y1) {
+    long i; // loop counter
+    // Row address set (command 0x2B)
+    WriteSpiCommand(PASET);
+    WriteSpiData(x0);
+    WriteSpiData(x1);
+    // Column address set (command 0x2A)
+    WriteSpiCommand(CASET);
+    WriteSpiData(y0);
+    WriteSpiData(y1);
+    // set the display memory to BLACK
+    WriteSpiCommand(RAMWR);
+    for(i = 0; i < ((131 * 131) / 2); i++) {
+    WriteSpiData((BLACK >> 4) & 0xFF);
+    WriteSpiData(((BLACK & 0xF) << 4) | ((BLACK >> 8) & 0xF));
+    WriteSpiData(BLACK & 0xFF);
+  }
+}
