@@ -18,5 +18,7 @@ int main (){
   LCDPutStr("Dominik Wolos", 15, 10, LARGE, BLACK, WHITE); // WyĹ›wietlenie na LCD imienia i nazwiska
   LCDPutStr("Grupa: IINS5.2.4", 30, 30, LARGE, BLACK, WHITE); // WyĹ›wietlenie grupy w kolejnej linii 
   Delaya(50000000); // OpĂłĹşnienie 5 sekund
-  LCDClearScreenV2(0,0,132,50); 
+  LCDClearScreenV2(0,0,132,50);
+
+  LCDWrite130x130bmp();
 }
