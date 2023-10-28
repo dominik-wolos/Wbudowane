@@ -1,0 +1,22 @@
+#include <targets\AT91SAM7.h>
+#include "pcf8833u8_lcd.h"
+
+
+ void LCDClearScreenV2(int minX, int minY, int maxX, int maxY) { 
+   for (int i = minY; i <=maxY; i++) {
+    for (int j = minX; j <=maxX; j++) {
+        LCDSetPixel(i,j,WHITE);
+      }
+   }
+ }
+
+int main (){
+  InitLCD(); // Inicjalizacja ekranu LCD
+  SetContrast(30);
+  LCDClearScreen(); // Wyczyszczenie ekranu
+  
+  LCDPutStr("Dominik Wolos", 15, 10, LARGE, BLACK, WHITE); // WyĹ›wietlenie na LCD imienia i nazwiska
+  LCDPutStr("Grupa: IINS5.2.4", 30, 30, LARGE, BLACK, WHITE); // WyĹ›wietlenie grupy w kolejnej linii 
+  Delaya(50000000); // OpĂłĹşnienie 5 sekund
+  LCDClearScreenV2(0,0,132,50); 
+}
